@@ -1,18 +1,166 @@
 'use client';
 
+import Link from 'next/link';
 import { useApp } from '@/lib/context/app-context';
+import { getDueDateStatus, formatRelativeDate, daysBetween } from '@/lib/utils';
+import Card from '@/components/ui/Card';
+import Badge from '@/components/ui/Badge';
+import StatusBadge from '@/components/contacts/StatusBadge';
 
 export default function DashboardPage() {
   const { state } = useApp();
+
   const pendingActions = state.actions.filter((a) => !a.completed);
+  const overdueActions = pendingActions.filter((a) => getDueDateStatus(a.dueDate) === 'overdue');
+  const todayActions = pendingActions.filter((a) => getDueDateStatus(a.dueDate) === 'today');
+  const todayAndOverdue = [...overdueActions, ...todayActions];
+
+  // Contacts needing attention: warm/hot with no interaction in warmContactReengageDays,
+  // cold with no interaction in coldContactReengageDays, or leads with no interactions
+  const now = new Date().toISOString();
+  const contactsNeedingAttention = state.contacts.filter((c) => {
+    if (c.status === 'inactive') return false;
+    if (c.status === 'lead' && !c.lastInteractionAt) return true;
+    if (!c.lastInteractionAt) return true;
+    const daysSince = daysBetween(c.lastInteractionAt, now);
+    if ((c.status === 'warm' || c.status === 'hot' || c.status === 'active') && daysSince >= state.rules.warmContactReengageDays) return true;
+    if (c.status === 'cold' && daysSince >= state.rules.coldContactReengageDays) return true;
+    return false;
+  });
 
   return (
     <div>
       <h1 className="text-2xl font-bold text-stone-900 dark:text-stone-100">Dashboard</h1>
-      <p className="mt-2 text-muted">
-        {state.contacts.length} contacts &middot; {pendingActions.length} pending actions
-      </p>
-      <p className="mt-8 text-sm text-muted">Full dashboard coming soon.</p>
+      <p className="mt-1 text-sm text-muted">Your networking overview at a glance.</p>
+
+      {/* Stats row */}
+      <div className="mt-6 grid gap-4 sm:grid-cols-4">
+        <Card className="p-4">
+          <p className="text-sm text-muted">Contacts</p>
+          <p className="mt-1 text-2xl font-bold text-stone-900 dark:text-stone-100">{state.contacts.length}</p>
+        </Card>
+        <Card className="p-4">
+          <p className="text-sm text-muted">Pending Actions</p>
+          <p className="mt-1 text-2xl font-bold text-stone-900 dark:text-stone-100">{pendingActions.length}</p>
+        </Card>
+        <Card className="p-4">
+          <p className="text-sm text-muted">Overdue</p>
+          <p className={`mt-1 text-2xl font-bold ${overdueActions.length > 0 ? 'text-danger' : 'text-stone-900 dark:text-stone-100'}`}>
+            {overdueActions.length}
+          </p>
+        </Card>
+        <Card className="p-4">
+          <p className="text-sm text-muted">Interactions</p>
+          <p className="mt-1 text-2xl font-bold text-stone-900 dark:text-stone-100">{state.interactions.length}</p>
+        </Card>
+      </div>
+
+      <div className="mt-8 grid gap-8 lg:grid-cols-2">
+        {/* Today's Actions */}
+        <div>
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-stone-900 dark:text-stone-100">
+              Today&apos;s Actions
+              {todayAndOverdue.length > 0 && (
+                <Badge variant="red" size="md">
+                  {todayAndOverdue.length}
+                </Badge>
+              )}
+            </h2>
+            <Link href="/actions" className="text-sm text-primary hover:underline">
+              View all
+            </Link>
+          </div>
+          <div className="mt-3 space-y-2">
+            {todayAndOverdue.length === 0 && (
+              <Card className="p-4">
+                <p className="text-sm text-muted">No urgent actions. You&apos;re on track!</p>
+              </Card>
+            )}
+            {todayAndOverdue.map((action) => {
+              const contact = state.contacts.find((c) => c.id === action.contactId);
+              const dueDateStatus = getDueDateStatus(action.dueDate);
+              return (
+                <Card key={action.id} className="p-3">
+                  <div className="flex items-start gap-2">
+                    <div
+                      className={`mt-1 h-2 w-2 shrink-0 rounded-full ${
+                        dueDateStatus === 'overdue' ? 'bg-danger' : 'bg-amber-500'
+                      }`}
+                    />
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium text-stone-900 dark:text-stone-100">
+                        {action.description}
+                      </p>
+                      <div className="mt-0.5 flex items-center gap-2 text-xs text-muted">
+                        {contact && (
+                          <Link href={`/contacts/${contact.id}`} className="text-primary hover:underline">
+                            {contact.name}
+                          </Link>
+                        )}
+                        <span>
+                          {dueDateStatus === 'overdue' ? 'Overdue' : 'Due today'}
+                        </span>
+                        <Badge variant={action.priority === 'high' ? 'red' : action.priority === 'medium' ? 'amber' : 'default'}>
+                          {action.priority}
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Contacts Needing Attention */}
+        <div>
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-stone-900 dark:text-stone-100">
+              Contacts Needing Attention
+              {contactsNeedingAttention.length > 0 && (
+                <Badge variant="amber" size="md">
+                  {contactsNeedingAttention.length}
+                </Badge>
+              )}
+            </h2>
+            <Link href="/contacts" className="text-sm text-primary hover:underline">
+              View all
+            </Link>
+          </div>
+          <div className="mt-3 space-y-2">
+            {contactsNeedingAttention.length === 0 && (
+              <Card className="p-4">
+                <p className="text-sm text-muted">All contacts are up to date!</p>
+              </Card>
+            )}
+            {contactsNeedingAttention.map((contact) => (
+              <Link key={contact.id} href={`/contacts/${contact.id}`}>
+                <Card hover className="p-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-stone-900 dark:text-stone-100">
+                        {contact.name}
+                      </p>
+                      <p className="text-xs text-muted">
+                        {contact.role} at {contact.company}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-muted">
+                        {contact.lastInteractionAt
+                          ? formatRelativeDate(contact.lastInteractionAt)
+                          : 'No contact yet'}
+                      </span>
+                      <StatusBadge status={contact.status} />
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
