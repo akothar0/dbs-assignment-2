@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useApp } from '@/lib/context/app-context';
-import { Contact, Interaction, Action, HOW_WE_MET_LABELS, ACTION_TYPE_LABELS } from '@/lib/types';
+import { Contact, Interaction, Action, HOW_WE_MET_LABELS } from '@/lib/types';
 import { formatDate, formatRelativeDate, getDueDateStatus } from '@/lib/utils';
 import { generateMessageTemplate } from '@/lib/templates';
 import StatusBadge from '@/components/contacts/StatusBadge';

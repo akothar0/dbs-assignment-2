@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(lsof -ti:3000)",
+      "Bash(xargs kill:*)",
+      "Bash(npm run:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_take_screenshot"
+    ]
+  }
+}

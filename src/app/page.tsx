@@ -59,7 +59,7 @@ export default function DashboardPage() {
         {/* Today's Actions */}
         <div>
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-stone-900 dark:text-stone-100">
+            <h2 className="flex items-center gap-2 text-lg font-semibold text-stone-900 dark:text-stone-100">
               Today&apos;s Actions
               {todayAndOverdue.length > 0 && (
                 <Badge variant="red" size="md">
@@ -116,7 +116,7 @@ export default function DashboardPage() {
         {/* Contacts Needing Attention */}
         <div>
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-stone-900 dark:text-stone-100">
+            <h2 className="flex items-center gap-2 text-lg font-semibold text-stone-900 dark:text-stone-100">
               Contacts Needing Attention
               {contactsNeedingAttention.length > 0 && (
                 <Badge variant="amber" size="md">

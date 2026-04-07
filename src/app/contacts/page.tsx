@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useApp } from '@/lib/context/app-context';
-import { ContactStatus, STATUS_LABELS } from '@/lib/types';
+import { ContactStatus } from '@/lib/types';
 import ContactCard from '@/components/contacts/ContactCard';
 import SearchInput from '@/components/ui/SearchInput';
 import Button from '@/components/ui/Button';
