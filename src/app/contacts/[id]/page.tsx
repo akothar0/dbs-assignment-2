@@ -57,7 +57,10 @@ export default function ContactDetailPage() {
   const handleAddInteraction = (interaction: Interaction) => {
     dispatch({ type: 'ADD_INTERACTION', payload: interaction });
 
-    // Auto-create action based on interaction type and rules
+    // Auto-create action items based on the interaction type and the user's networking rules:
+    // - Coffee chat or interview → "send thank-you" due in thankYouDeadlineHours
+    // - Outreach → "send follow-up" due in followUpNoResponseDays
+    // Due dates are calculated relative to the interaction date, not the current time.
     const { rules } = state;
     let autoAction: Action | null = null;
 

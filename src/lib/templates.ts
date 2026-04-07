@@ -1,5 +1,11 @@
 import { ActionType, Contact, Interaction } from './types';
 
+/**
+ * Generates a fill-in-the-blank message template for an action item.
+ * Auto-fills contact name, company, and interaction summary where available.
+ * Placeholders marked with {___} indicate fields the user should complete.
+ * This scaffolds for future AI-generated messages.
+ */
 export function generateMessageTemplate(
   actionType: ActionType,
   contact: Contact,

@@ -1,3 +1,4 @@
+/** Formats a date as a human-readable relative string (e.g., "Yesterday", "3 days ago", "In 2 weeks") */
 export function formatRelativeDate(dateStr: string): string {
   const date = new Date(dateStr);
   const now = new Date();
@@ -27,6 +28,7 @@ export function formatDate(dateStr: string): string {
   });
 }
 
+/** Compares a due date against today to determine urgency. Strips time — compares dates only. */
 export function getDueDateStatus(dueDate: string): 'overdue' | 'today' | 'upcoming' {
   const due = new Date(dueDate);
   const now = new Date();

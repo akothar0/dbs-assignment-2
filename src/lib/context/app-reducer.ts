@@ -1,5 +1,10 @@
 import { AppState, Action, Contact, Interaction, NetworkingRules } from '../types';
 
+/**
+ * Discriminated union of all actions the app reducer can handle.
+ * Each action targets one of the three core entities (Contact, Interaction, Action)
+ * or the networking rules configuration.
+ */
 export type AppAction =
   | { type: 'ADD_CONTACT'; payload: Contact }
   | { type: 'UPDATE_CONTACT'; payload: Contact }
@@ -26,6 +31,7 @@ export function appReducer(state: AppState, action: AppAction): AppState {
         ),
       };
 
+    // Cascade delete: removing a contact also removes all their interactions and actions
     case 'DELETE_CONTACT':
       return {
         ...state,
@@ -34,6 +40,8 @@ export function appReducer(state: AppState, action: AppAction): AppState {
         actions: state.actions.filter((a) => a.contactId !== action.payload),
       };
 
+    // Adding an interaction also updates the parent contact's lastInteractionAt
+    // if this interaction is more recent than the current latest
     case 'ADD_INTERACTION': {
       const interaction = action.payload;
       const updatedContacts = state.contacts.map((c) => {
@@ -74,6 +82,7 @@ export function appReducer(state: AppState, action: AppAction): AppState {
     case 'ADD_ACTION':
       return { ...state, actions: [...state.actions, action.payload] };
 
+    // Toggle sets completedAt timestamp when marking done, clears it when unchecking
     case 'TOGGLE_ACTION':
       return {
         ...state,
