@@ -44,13 +44,6 @@ export default function Navbar() {
               </Link>
             );
           })}
-
-          <Link
-            href="/contacts/new"
-            className="ml-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-700"
-          >
-            + Add Contact
-          </Link>
         </div>
 
         {/* Mobile hamburger */}
@@ -94,13 +87,6 @@ export default function Navbar() {
                 </Link>
               );
             })}
-            <Link
-              href="/contacts/new"
-              onClick={() => setMobileOpen(false)}
-              className="mt-1 rounded-lg bg-indigo-600 px-4 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-indigo-700"
-            >
-              + Add Contact
-            </Link>
           </div>
         </div>
       )}

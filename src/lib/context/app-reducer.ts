@@ -14,7 +14,6 @@ export type AppAction =
   | { type: 'DELETE_INTERACTION'; payload: string }
   | { type: 'ADD_ACTION'; payload: Action }
   | { type: 'TOGGLE_ACTION'; payload: string }
-  | { type: 'UPDATE_ACTION'; payload: Action }
   | { type: 'DELETE_ACTION'; payload: string }
   | { type: 'UPDATE_RULES'; payload: NetworkingRules };
 
@@ -94,14 +93,6 @@ export function appReducer(state: AppState, action: AppAction): AppState {
                 completedAt: !a.completed ? new Date().toISOString() : null,
               }
             : a
-        ),
-      };
-
-    case 'UPDATE_ACTION':
-      return {
-        ...state,
-        actions: state.actions.map((a) =>
-          a.id === action.payload.id ? action.payload : a
         ),
       };
 
