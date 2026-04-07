@@ -1,0 +1,83 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]:
+      - link "Networking Buddy" [ref=e4] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e5]:
+        - link "Dashboard" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - link "Contacts" [ref=e7] [cursor=pointer]:
+          - /url: /contacts
+        - link "Actions" [ref=e8] [cursor=pointer]:
+          - /url: /actions
+        - link "Settings" [ref=e9] [cursor=pointer]:
+          - /url: /settings
+        - link "+ Add Contact" [ref=e10] [cursor=pointer]:
+          - /url: /contacts/new
+  - main [ref=e11]:
+    - generic [ref=e12]:
+      - heading "Add Contact" [level=1] [ref=e13]
+      - paragraph [ref=e14]: Add a new person to your network.
+      - generic [ref=e16]:
+        - generic [ref=e17]:
+          - generic [ref=e18]:
+            - generic [ref=e19]: Name *
+            - textbox "Name *" [ref=e20]:
+              - /placeholder: Sarah Chen
+          - generic [ref=e21]:
+            - generic [ref=e22]: Company *
+            - textbox "Company *" [ref=e23]:
+              - /placeholder: Google
+        - generic [ref=e24]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: Role
+            - textbox "Role" [ref=e27]:
+              - /placeholder: Engineering Manager
+          - generic [ref=e28]:
+            - generic [ref=e29]: Status
+            - combobox "Status" [ref=e30]:
+              - option "Lead" [selected]
+              - option "Warm"
+              - option "Hot"
+              - option "Active"
+              - option "Cold"
+              - option "Inactive"
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - generic [ref=e33]: Email
+            - textbox "Email" [ref=e34]:
+              - /placeholder: sarah@gmail.com
+          - generic [ref=e35]:
+            - generic [ref=e36]: LinkedIn
+            - textbox "LinkedIn" [ref=e37]:
+              - /placeholder: linkedin.com/in/sarahchen
+        - generic [ref=e38]:
+          - generic [ref=e39]:
+            - generic [ref=e40]: Phone
+            - textbox "Phone" [ref=e41]:
+              - /placeholder: 555-0123
+          - generic [ref=e42]:
+            - generic [ref=e43]: How We Met
+            - combobox "How We Met" [ref=e44]:
+              - option "Career Fair"
+              - option "LinkedIn" [selected]
+              - option "Alumni Network"
+              - option "Referral"
+              - option "Meetup"
+              - option "Conference"
+              - option "Class / Course"
+              - option "Other"
+        - generic [ref=e45]:
+          - generic [ref=e46]: Tags
+          - textbox "Tags" [ref=e47]:
+            - /placeholder: engineering, google, referral (comma-separated)
+        - generic [ref=e48]:
+          - generic [ref=e49]: Notes
+          - textbox "Notes" [ref=e50]:
+            - /placeholder: What should you remember about this person?
+        - generic [ref=e51]:
+          - button "Add Contact" [ref=e52]
+          - button "Cancel" [ref=e53]
+  - button "Open Next.js Dev Tools" [ref=e59] [cursor=pointer]:
+    - img [ref=e60]
+  - alert [ref=e63]

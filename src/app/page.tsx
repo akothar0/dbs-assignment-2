@@ -6,6 +6,7 @@ import { getDueDateStatus, daysBetween } from '@/lib/utils';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import StatusBadge from '@/components/contacts/StatusBadge';
+import PipelineBar from '@/components/contacts/PipelineBar';
 
 export default function DashboardPage() {
   const { state } = useApp();
@@ -85,6 +86,16 @@ export default function DashboardPage() {
           </p>
         </Card>
       </div>
+
+      {/* Pipeline: visual breakdown of contacts by status */}
+      {state.contacts.length > 0 && (
+        <Card className="mt-6 p-5">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">
+            Networking Pipeline
+          </h2>
+          <PipelineBar contacts={state.contacts} />
+        </Card>
+      )}
 
       <div className="mt-8 grid gap-8 lg:grid-cols-2">
         {/* Today's Actions */}

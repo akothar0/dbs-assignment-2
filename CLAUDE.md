@@ -22,6 +22,7 @@ Data lives in client-side React state only — it resets on page refresh. A data
 - `npm run build` — production build
 - `npm run start` — serve production build
 - `npm run lint` — ESLint
+- `npm test` — Jest tests (runs sequentially due to Node 25 localStorage quirk)
 
 ## Pages & Routes
 

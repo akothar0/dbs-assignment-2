@@ -1,0 +1,108 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]:
+      - link "Networking Buddy" [ref=e4] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e5]:
+        - link "Dashboard" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - link "Contacts" [ref=e7] [cursor=pointer]:
+          - /url: /contacts
+        - link "Actions" [ref=e8] [cursor=pointer]:
+          - /url: /actions
+        - link "Settings" [ref=e9] [cursor=pointer]:
+          - /url: /settings
+        - link "+ Add Contact" [ref=e10] [cursor=pointer]:
+          - /url: /contacts/new
+  - main [ref=e11]:
+    - generic [ref=e12]:
+      - heading "Dashboard" [level=1] [ref=e13]
+      - paragraph [ref=e14]: Your networking overview at a glance.
+      - generic [ref=e15]:
+        - link "Total Contacts 5 2 hot/active leads" [ref=e16] [cursor=pointer]:
+          - /url: /contacts
+          - generic [ref=e17]:
+            - paragraph [ref=e18]: Total Contacts
+            - paragraph [ref=e19]: "5"
+            - paragraph [ref=e20]: 2 hot/active leads
+        - link "Due This Week 5 6 total pending" [ref=e21] [cursor=pointer]:
+          - /url: /actions
+          - generic [ref=e22]:
+            - paragraph [ref=e23]: Due This Week
+            - paragraph [ref=e24]: "5"
+            - paragraph [ref=e25]: 6 total pending
+        - generic [ref=e26]:
+          - paragraph [ref=e27]: Overdue
+          - paragraph [ref=e28]: "1"
+          - paragraph [ref=e29]: needs your attention
+        - generic [ref=e30]:
+          - paragraph [ref=e31]: Need Attention
+          - paragraph [ref=e32]: "1"
+          - paragraph [ref=e33]: contact going quiet
+      - generic [ref=e34]:
+        - heading "Networking Pipeline" [level=2] [ref=e35]
+        - generic [ref=e36]:
+          - generic [ref=e37]:
+            - 'generic "Lead: 1" [ref=e38]'
+            - 'generic "Cold: 1" [ref=e39]'
+            - 'generic "Warm: 1" [ref=e40]'
+            - 'generic "Hot: 1" [ref=e41]'
+            - 'generic "Active: 1" [ref=e42]'
+          - generic [ref=e43]:
+            - generic [ref=e44]:
+              - generic [ref=e46]: Lead
+              - generic [ref=e47]: "1"
+            - generic [ref=e48]:
+              - generic [ref=e50]: Cold
+              - generic [ref=e51]: "1"
+            - generic [ref=e52]:
+              - generic [ref=e54]: Warm
+              - generic [ref=e55]: "1"
+            - generic [ref=e56]:
+              - generic [ref=e58]: Hot
+              - generic [ref=e59]: "1"
+            - generic [ref=e60]:
+              - generic [ref=e62]: Active
+              - generic [ref=e63]: "1"
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e66]:
+            - heading "Today's Actions 2" [level=2] [ref=e67]:
+              - text: Today's Actions
+              - generic [ref=e68]: "2"
+            - link "View all" [ref=e69] [cursor=pointer]:
+              - /url: /actions
+          - generic [ref=e70]:
+            - generic [ref=e74]:
+              - paragraph [ref=e75]: Follow up with Elena — overdue since the meetup
+              - generic [ref=e76]:
+                - link "Elena Rodriguez" [ref=e77] [cursor=pointer]:
+                  - /url: /contacts/c5
+                - generic [ref=e78]: Overdue
+                - generic [ref=e79]: low
+            - generic [ref=e83]:
+              - paragraph [ref=e84]: Send thank-you note to Sarah for submitting the referral
+              - generic [ref=e85]:
+                - link "Sarah Chen" [ref=e86] [cursor=pointer]:
+                  - /url: /contacts/c1
+                - generic [ref=e87]: Due today
+                - generic [ref=e88]: high
+        - generic [ref=e89]:
+          - generic [ref=e90]:
+            - heading "Contacts Needing Attention 1" [level=2] [ref=e91]:
+              - text: Contacts Needing Attention
+              - generic [ref=e92]: "1"
+            - link "View all" [ref=e93] [cursor=pointer]:
+              - /url: /contacts
+          - link "James Liu Staff Engineer at Figma No contact yet Lead" [ref=e95] [cursor=pointer]:
+            - /url: /contacts/c4
+            - generic [ref=e97]:
+              - generic [ref=e98]:
+                - paragraph [ref=e99]: James Liu
+                - paragraph [ref=e100]: Staff Engineer at Figma
+              - generic [ref=e101]:
+                - generic [ref=e102]: No contact yet
+                - generic [ref=e103]: Lead
+  - button "Open Next.js Dev Tools" [ref=e109] [cursor=pointer]:
+    - img [ref=e110]
+  - alert [ref=e113]

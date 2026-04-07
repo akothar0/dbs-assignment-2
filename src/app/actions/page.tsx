@@ -2,9 +2,12 @@
 
 import { useState, useMemo } from 'react';
 import { useApp } from '@/lib/context/app-context';
-import { ActionType, ACTION_TYPE_LABELS } from '@/lib/types';
+import { Action, ActionType, ACTION_TYPE_LABELS } from '@/lib/types';
 import { getDueDateStatus } from '@/lib/utils';
 import ActionCard from '@/components/actions/ActionCard';
+import ActionForm from '@/components/actions/ActionForm';
+import Button from '@/components/ui/Button';
+import Card from '@/components/ui/Card';
 
 type FilterType = ActionType | 'all';
 type ViewType = 'pending' | 'completed' | 'all';
@@ -18,6 +21,7 @@ export default function ActionsPage() {
   const { state, dispatch } = useApp();
   const [typeFilter, setTypeFilter] = useState<FilterType>('all');
   const [viewFilter, setViewFilter] = useState<ViewType>('pending');
+  const [showForm, setShowForm] = useState(false);
 
   const filteredActions = useMemo(() => {
     return state.actions
@@ -46,6 +50,11 @@ export default function ActionsPage() {
   const handleToggle = (id: string) => dispatch({ type: 'TOGGLE_ACTION', payload: id });
   const handleDelete = (id: string) => dispatch({ type: 'DELETE_ACTION', payload: id });
 
+  const handleAddAction = (action: Action) => {
+    dispatch({ type: 'ADD_ACTION', payload: action });
+    setShowForm(false);
+  };
+
   const pendingCount = state.actions.filter((a) => !a.completed).length;
   const overdueCount = state.actions.filter(
     (a) => !a.completed && getDueDateStatus(a.dueDate) === 'overdue'
@@ -53,12 +62,29 @@ export default function ActionsPage() {
 
   return (
     <div>
-      <div>
-        <h1 className="text-2xl font-bold text-stone-900 dark:text-stone-100">Action Items</h1>
-        <p className="mt-1 text-sm text-muted">
-          {pendingCount} pending{overdueCount > 0 && <span className="text-danger"> &middot; {overdueCount} overdue</span>}
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-stone-900 dark:text-stone-100">Action Items</h1>
+          <p className="mt-1 text-sm text-muted">
+            {pendingCount} pending{overdueCount > 0 && <span className="text-danger"> &middot; {overdueCount} overdue</span>}
+          </p>
+        </div>
+        {!showForm && (
+          <Button onClick={() => setShowForm(true)}>+ Add Action</Button>
+        )}
       </div>
+
+      {/* Inline form for adding a new action */}
+      {showForm && (
+        <Card className="mt-4 p-5">
+          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted">New Action</h2>
+          <ActionForm
+            contacts={state.contacts}
+            onSubmit={handleAddAction}
+            onCancel={() => setShowForm(false)}
+          />
+        </Card>
+      )}
 
       {/* Filters */}
       <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

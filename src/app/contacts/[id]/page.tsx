@@ -11,6 +11,7 @@ import StatusBadge from '@/components/contacts/StatusBadge';
 import ContactForm from '@/components/contacts/ContactForm';
 import InteractionTimeline from '@/components/interactions/InteractionTimeline';
 import InteractionForm from '@/components/interactions/InteractionForm';
+import ActionForm from '@/components/actions/ActionForm';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
@@ -23,6 +24,7 @@ export default function ContactDetailPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [showInteractionForm, setShowInteractionForm] = useState(false);
   const [editingInteraction, setEditingInteraction] = useState<Interaction | null>(null);
+  const [showActionForm, setShowActionForm] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const contact = state.contacts.find((c) => c.id === params.id);
@@ -283,11 +285,33 @@ export default function ContactDetailPage() {
         {/* Right column: Actions */}
         <div className="space-y-6">
           <Card className="p-5">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
-              Action Items ({pendingActions.length})
-            </h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
+                Action Items ({pendingActions.length})
+              </h2>
+              {!showActionForm && (
+                <Button size="sm" onClick={() => setShowActionForm(true)}>
+                  + Add
+                </Button>
+              )}
+            </div>
+
+            {showActionForm && (
+              <div className="mt-3 rounded-lg border border-border bg-stone-50 p-4 dark:bg-stone-900">
+                <ActionForm
+                  contactId={contact.id}
+                  contacts={state.contacts}
+                  onSubmit={(action) => {
+                    dispatch({ type: 'ADD_ACTION', payload: action });
+                    setShowActionForm(false);
+                  }}
+                  onCancel={() => setShowActionForm(false)}
+                />
+              </div>
+            )}
+
             <div className="mt-3 space-y-3">
-              {pendingActions.length === 0 && (
+              {pendingActions.length === 0 && !showActionForm && (
                 <p className="text-sm text-muted">No pending actions.</p>
               )}
               {pendingActions.map((action) => {
