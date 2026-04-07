@@ -1,6 +1,7 @@
 'use client';
 
 import { Contact, ContactStatus, STATUS_LABELS } from '@/lib/types';
+import { getPipelineCounts } from '@/lib/utils';
 
 /**
  * Visual breakdown of contacts by status, shown as a segmented bar.
@@ -17,17 +18,11 @@ const statusColors: Record<ContactStatus, string> = {
   inactive: 'bg-stone-300',
 };
 
-// Display order: pipeline progression from earliest to most engaged
-const statusOrder: ContactStatus[] = ['lead', 'cold', 'warm', 'hot', 'active', 'inactive'];
-
 export default function PipelineBar({ contacts }: { contacts: Contact[] }) {
   const total = contacts.length;
   if (total === 0) return null;
 
-  const counts = statusOrder.map((status) => ({
-    status,
-    count: contacts.filter((c) => c.status === status).length,
-  })).filter((s) => s.count > 0);
+  const counts = getPipelineCounts(contacts);
 
   return (
     <div>

@@ -1,4 +1,5 @@
-import { formatRelativeDate, formatDate, getDueDateStatus, daysBetween } from '@/lib/utils';
+import { formatRelativeDate, formatDate, getDueDateStatus, daysBetween, getPipelineCounts } from '@/lib/utils';
+import { Contact } from '@/lib/types';
 
 describe('formatRelativeDate', () => {
   it('returns "Today" for the current date', () => {
@@ -77,5 +78,64 @@ describe('daysBetween', () => {
     const a = '2026-04-01T00:00:00Z';
     const b = '2026-04-10T00:00:00Z';
     expect(daysBetween(a, b)).toBe(daysBetween(b, a));
+  });
+});
+
+// Helper to build a minimal contact with a given status
+function makeContact(id: string, status: Contact['status']): Contact {
+  return {
+    id, name: 'Test', company: 'Co', role: 'Eng', email: '', linkedIn: '',
+    phone: '', howWeMet: 'linkedin', howWeMetDetail: '', notes: '',
+    status, tags: [], createdAt: '2026-04-01T00:00:00Z', lastInteractionAt: null,
+  };
+}
+
+describe('getPipelineCounts', () => {
+  it('returns empty array for no contacts', () => {
+    expect(getPipelineCounts([])).toEqual([]);
+  });
+
+  it('counts contacts by status', () => {
+    const contacts = [
+      makeContact('1', 'hot'),
+      makeContact('2', 'hot'),
+      makeContact('3', 'warm'),
+      makeContact('4', 'lead'),
+    ];
+    const counts = getPipelineCounts(contacts);
+    expect(counts).toEqual([
+      { status: 'lead', count: 1 },
+      { status: 'warm', count: 1 },
+      { status: 'hot', count: 2 },
+    ]);
+  });
+
+  it('excludes statuses with zero contacts', () => {
+    const contacts = [makeContact('1', 'active')];
+    const counts = getPipelineCounts(contacts);
+    expect(counts).toHaveLength(1);
+    expect(counts[0]).toEqual({ status: 'active', count: 1 });
+  });
+
+  it('maintains pipeline order (lead → cold → warm → hot → active → inactive)', () => {
+    const contacts = [
+      makeContact('1', 'active'),
+      makeContact('2', 'lead'),
+      makeContact('3', 'hot'),
+    ];
+    const statuses = getPipelineCounts(contacts).map((c) => c.status);
+    expect(statuses).toEqual(['lead', 'hot', 'active']);
+  });
+
+  it('includes inactive contacts when present', () => {
+    const contacts = [
+      makeContact('1', 'warm'),
+      makeContact('2', 'inactive'),
+    ];
+    const counts = getPipelineCounts(contacts);
+    expect(counts).toEqual([
+      { status: 'warm', count: 1 },
+      { status: 'inactive', count: 1 },
+    ]);
   });
 });

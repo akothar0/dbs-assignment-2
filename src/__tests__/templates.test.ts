@@ -82,4 +82,16 @@ describe('generateMessageTemplate', () => {
       expect(result).toContain('{___}');
     }
   });
+
+  it('uses first name only, not full name', () => {
+    const result = generateMessageTemplate('send-outreach', sampleContact);
+    expect(result).toContain('Hi Sarah');
+    expect(result).not.toContain('Hi Sarah Chen');
+  });
+
+  it('handles a contact with a single-word name', () => {
+    const singleName = { ...sampleContact, name: 'Madonna' };
+    const result = generateMessageTemplate('send-thankyou', singleName);
+    expect(result).toContain('Hi Madonna');
+  });
 });

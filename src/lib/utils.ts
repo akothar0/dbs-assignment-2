@@ -45,3 +45,18 @@ export function daysBetween(date1: string, date2: string): number {
   const d2 = new Date(date2);
   return Math.floor(Math.abs(d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
 }
+
+import { Contact, ContactStatus } from './types';
+
+/** Pipeline display order: progression from earliest to most engaged stage */
+export const PIPELINE_ORDER: ContactStatus[] = ['lead', 'cold', 'warm', 'hot', 'active', 'inactive'];
+
+/** Counts contacts per status, filtered to only statuses with at least one contact */
+export function getPipelineCounts(contacts: Contact[]): { status: ContactStatus; count: number }[] {
+  return PIPELINE_ORDER
+    .map((status) => ({
+      status,
+      count: contacts.filter((c) => c.status === status).length,
+    }))
+    .filter((s) => s.count > 0);
+}
